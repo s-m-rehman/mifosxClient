@@ -1,0 +1,104 @@
+<div class="col-md-12" ng-controller="SearchTransactionController">
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="#/accounting">{{'label.anchor.accounting' | translate}}</a></li>
+            <li class="active">{{'label.anchor.searchjournalentries' | translate}}</li>
+        </ul>
+    </div>
+
+	<div class="form-inline marginbuttontop25px" ng-show="isCollapsed">
+        <div class="form-group">
+        	<input class="form-control" ng-autofocus="true" ng-model="formData.glAccount" type="text" placeholder="{{'label.input.accountnameorcode' | translate}}" autocomplete="off" typeahead="glAccount as (glAccount.name + '(' + glAccount.glCode + ')') for glAccount in glAccounts | filter:$viewValue | limitTo:8"/>
+        </div>
+		<div class="form-group">
+            <select class="form-control" ng-model="formData.officeId" ng-options="office.id as office.name for office in offices" value="{{office.id}}">
+                <option class="displaynone" value="">{{'label.selectoffice' | translate}}</option>
+            </select>
+		</div>
+		<div class="form-group">
+            <select class="form-control" ng-model="formData.manualEntriesOnly" ng-options="filter.value as filter.option for filter in filters" value="{{filter.value}}">
+                <option class="displaynone" value="">{{'label.selectfilter' | translate}}</option>
+            </select>
+		</div>
+        <div class="form-group">
+            <input class="form-control" type="text" datepicker-pop="dd MMMM yyyy" ng-model="date.first" is-open="opened" min="minDate" max="'2020-06-22'" placeholder="{{ 'label.input.fromdate' | translate }}" />
+		</div>        
+		<div class="form-group">
+            <input class="form-control" type="text" datepicker-pop="dd MMMM yyyy" ng-model="date.second" is-open="opened1" min="minDate" max="'2020-06-22'" placeholder="{{ 'label.input.todate' | translate }}" />
+        </div>
+		<div class="form-group clear">
+        	<a ng-click="searchTransaction()" class="btn btn-primary control" has-permission='READ_JOURNALENTRY'><i class="icon-search icon-white"></i></a></center>
+		</div>
+		<div class="clear"></div>
+		-OR-
+		<br> 
+		<div class="form-group">
+            <input ng-model="formData.transactionId" type="text"
+            	placeholder="{{'label.input.searchbytransaction' | translate}}" class="form-control"/>
+        </div>
+       	<div class="form-group">
+       		<a ng-click="searchTransaction()" class="btn btn-primary control" has-permission='READ_JOURNALENTRY'><i
+                        class="icon-search icon-white"></i></a></span>
+        </div>
+		   
+	</div>
+	<div class="pull-right" ng-show="!isCollapsed">
+		<button ng-click="isCollapsed = !isCollapsed" class="btn btn-primary control"><i class="icon-chevron-down icon-white"></i>{{
+        'label.button.parameters' | translate }}</button>
+	</div>
+    <br>
+    <div ng-show="displayResults">
+        <table class="table">
+            <thead>
+            <tr class="graybg">
+                <th>{{'label.heading.entryid' | translate}}</th>
+                <th>{{'label.heading.office' | translate}}</th>
+                <th>{{'label.heading.transactiondate' | translate}}</th>
+                <th>{{'label.heading.transactionid' | translate}}</th>
+                <th>{{'label.heading.type' | translate}}</th>
+                <th>{{'label.heading.createdby' | translate}}</th>
+                <th>{{'label.heading.account' | translate}}</th>
+                <th>{{'label.heading.debit' | translate}}</th>
+                <th>{{'label.heading.credit' | translate}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="pointer-main" ng-repeat="transaction in transactions.currentPageItems">
+                <td class="pointer" data-ng-click="routeTo(transaction.transactionId)">{{transaction.id}}</td>
+                <td class="pointer" data-ng-click="routeTo(transaction.transactionId)">{{transaction.officeName}}</td>
+                <td class="pointer" data-ng-click="routeTo(transaction.transactionId)">{{transaction.transactionDate |
+                    DateFormat}}
+                </td>
+                <td class="pointer" data-ng-click="routeTo(transaction.transactionId)">{{transaction.transactionId}}
+                </td>
+                <td class="pointer" data-ng-click="routeTo(transaction.transactionId)">
+                    {{transaction.glAccountType.value}}
+                </td>
+                <td class="pointer" data-ng-click="routeTo(transaction.transactionId)">
+                    {{transaction.createdByUserName}}
+                </td>
+                <td class="pointer" data-ng-click="routeTo(transaction.transactionId)">
+                    {{transaction.glAccountName}}({{transaction.glAccountCode}})
+                </td>
+                <td class="pointer" data-ng-click="routeTo(transaction.transactionId)">
+                    <div ng-show="transaction.entryType.value == 'DEBIT'">
+                        {{transaction.currency.displaySymbol}}&nbsp;{{transaction.amount}}
+                    </div>
+                </td>
+                <td class="pointer" data-ng-click="routeTo(transaction.transactionId)">
+                    <div ng-show="transaction.entryType.value == 'CREDIT'">
+                        {{transaction.currency.displaySymbol}}&nbsp;{{transaction.amount}}
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pager">
+            <li class="previous"><a id="prev" ng-click="transactions.previous()" href=""
+                                    ng-disabled="!transactions.hasPrevious()">&larr; {{'label.button.previous' |
+                translate}}</a></li>
+            <li class="next"><a id="next" ng-click="transactions.next()" href="" ng-disabled="!transactions.hasNext()">{{'label.button.next'
+                | translate}} &rarr;</a></li>
+        </ul>
+    </div>
+</div>

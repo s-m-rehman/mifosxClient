@@ -1,0 +1,27 @@
+<div class="col-md-12">
+    <ul class="breadcrumb">
+        <li><a href="#/accounting">{{'label.anchor.accounting' | translate}}</a></li>
+        <li class="active">{{'label.anchor.accountingrules' | translate}}</li>
+    </ul>
+    <div class="pull-right">
+        <a href="#/add_accrule" class="btn btn-primary" has-permission='CREATE_ACCOUNTINGRULE'><i class="icon-plus icon-white"></i> {{"label.button.addrule" |
+            translate}}</a>
+    </div>
+</div>
+
+<div class="col-md-12" ng-controller="AccountingRuleController">
+    <table class="table">
+        <thead>
+        <tr class="graybg">
+            <th>{{'label.heading.name' | translate}}</th>
+            <th>{{'label.heading.office' | translate}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="pointer-main" ng-repeat="rule in rules |orderBy:'name':reverse">
+            <td class="pointer" data-ng-click="routeTo(rule.id)">{{rule.name}}</td>
+            <td class="pointer" data-ng-click="routeTo(rule.id)">{{rule.officeName}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

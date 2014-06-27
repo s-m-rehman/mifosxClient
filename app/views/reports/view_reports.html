@@ -1,0 +1,29 @@
+<div class="col-md-12" ng-controller="ViewReportsController">
+    <div>
+        <ul class="breadcrumb">
+            <li class="active">{{type}}</li>
+        </ul>
+    </div>
+
+    <div>
+        <br><br>
+        <input ng-model="filterText" type="text" class="span marginbottom0px form-control"
+               placeholder="{{ 'label.input.filterbyname' | translate }}">
+        <table class="table">
+            <thead>
+            <tr class="graybg">
+                <th>{{ 'label.heading.name' | translate }}</th>
+                <th>{{ 'label.heading.type' | translate }}</th>
+                <th>{{ 'label.heading.category' | translate }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="pointer-main" ng-repeat="report in reports| orderBy:'report_name':reverse | filter:filterText">
+                <td class="pointer" data-ng-click="routeTo(report)">{{report.report_name}}</td>
+                <td class="pointer" data-ng-click="routeTo(report)">{{report.report_type}}</td>
+                <td class="pointer" data-ng-click="routeTo(report)">{{report.report_category}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
